@@ -1,5 +1,5 @@
 # tast-run-loop-script
-Script to run tast automatically
+Script to automatically run tast item in loop
 
 # Usage
 bash run_tast_loop.sh <ip> <test-item> <loop>
