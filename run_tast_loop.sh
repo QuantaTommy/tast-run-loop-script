@@ -36,14 +36,17 @@ if [ -f "$tast_run_record" ]; then
   rm "$tast_run_record"
 fi
 
+# tast run loop
 while [ $loop != 0 ]; do
   tast run $ip $item
 
+  # Get latest log file
   latest_log_folder="$tast_log_dir/latest"
   latest_log_folder_contents="$(ls -l $latest_log_folder)"
   latest_log_folder_contents_array=($latest_log_folder_contents)
   tast_results_log_folder_name=${latest_log_folder_contents_array[-1]}
 
+  # Check if test result is fail
   if grep -q "FAIL" "$tast_log_dir/$tast_results_log_folder_name/full.txt"; then
     cp -r "$tast_log_dir/$tast_results_log_folder_name" "$tast_log_saved_fail/$tast_results_log_folder_name"
     (( fail_count++ ))
@@ -52,6 +55,7 @@ while [ $loop != 0 ]; do
     (( pass_count++ ))
   fi
   
+  # Record current pass and fail in total
   printf "tast run record:\nPass: $pass_count\nFail: $fail_count\n" > "$tast_run_record"
 
   (( loop-- ))
